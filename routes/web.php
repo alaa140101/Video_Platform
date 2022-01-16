@@ -20,3 +20,5 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('layouts.main');
 })->name('dashboard');
+
+Route::resource('/videos', 'App\Http\Controllers\VideoController');
