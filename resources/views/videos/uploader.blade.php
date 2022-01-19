@@ -12,7 +12,7 @@
           @csrf
           <div class="form-group">
             <label for="title">عنوان الفيديو</label>
-            <input type="email" class="form-control @error('title') is-invalid @enderror" id="title" aria-describedby="title" name="title" value="{{ old('title') }}">
+            <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" aria-describedby="title" name="title" value="{{ old('title') }}">
             @error('title')
               <span class="invalid-feedback">
                 <strong>{{ $message }}</strong>
@@ -30,7 +30,7 @@
             @enderror
           </div>
           <div class="row">
-            <img src="" alt="" id="cover-image-thumb" class="col-2" width="100" height="100">
+            <img  id="cover-image-thumb" class="col-2" width="100" height="100">
             <span class="input-name col-6"></span>
           </div>
           <div class="form-group file-area">
@@ -48,7 +48,7 @@
           </div>
           <div class="form-group row">
             <div class="col-md-4">
-              <button class="btn btn-secondary">رفع الفيديو</button>
+                <button type="submit" class="btn btn-secondary">رفع الفيديو</button>
             </div>
           </div>
         </form>
