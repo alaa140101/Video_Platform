@@ -54,7 +54,7 @@ class VideoController extends Controller
         $imagePath = $randomPath . '.' . $request->video->getClientOriginalExtension();
 
         $image = Image::make($request->image)->resize(320, 180);
-        $path = Storage::put($imagePath, $image->stram());        
+        $path = Storage::put($imagePath, $image->stream());        
 
         $request->video->storeAs('/', $videoPath, 'public');
 
@@ -66,11 +66,16 @@ class VideoController extends Controller
             'user_id' => auth()->id(),
         ]);
 
-        $lowBitrateFormat = (new X264('acc', 'libx264'))->setKiloBitrate(500);
-        $low2_BitrateFormat = (new X264('acc', 'libx264'))->setKiloBitrate(900);
-        $mediumBitrateFormate = (new X264('acc', 'libx264'))->setKiloBitrate(1500);
-        $highBitrateFormate = (new X264('acc', 'libx264'))->setKiloBitrate(3000);
+        // $lowBitrateFormat = (new X264('acc', 'libx264'))->setKiloBitrate(500);
+        // $low2_BitrateFormat = (new X264('acc', 'libx264'))->setKiloBitrate(900);
+        // $mediumBitrateFormate = (new X264('acc', 'libx264'))->setKiloBitrate(1500);
+        // $highBitrateFormate = (new X264('acc', 'libx264'))->setKiloBitrate(3000);
 
+        $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
+        $low2_BitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(900);
+        $mediumBitrateFormate = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
+        $highBitrateFormate = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
+        
         $convertedName = '240-'.$video->video_path;
         $convertedName_360 = '360-'.$video->video_path;
         $convertedName_480 = '480-'.$video->video_path;
