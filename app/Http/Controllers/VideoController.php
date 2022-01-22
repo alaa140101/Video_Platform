@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ConverVideoForStreaming;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic as Image;
 use App\Models\Video;
 use Storage;
 
-use FFMpeg\Coordinate\Dimension;
-use FFMpeg\Format\Video\X264;
-use FFMpeg;
 
 class VideoController extends Controller
 {
@@ -66,60 +64,12 @@ class VideoController extends Controller
             'user_id' => auth()->id(),
         ]);
 
-        // $lowBitrateFormat = (new X264('acc', 'libx264'))->setKiloBitrate(500);
-        // $low2_BitrateFormat = (new X264('acc', 'libx264'))->setKiloBitrate(900);
-        // $mediumBitrateFormate = (new X264('acc', 'libx264'))->setKiloBitrate(1500);
-        // $highBitrateFormate = (new X264('acc', 'libx264'))->setKiloBitrate(3000);
+        ConverVideoForStreaming::dispatch($video);     
 
-        $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
-        $low2_BitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(900);
-        $mediumBitrateFormate = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
-        $highBitrateFormate = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
-        
-        $convertedName = '240-'.$video->video_path;
-        $convertedName_360 = '360-'.$video->video_path;
-        $convertedName_480 = '480-'.$video->video_path;
-        $convertedName_720 = '720-'.$video->video_path;
-
-        FFMpeg::fromDisk($video->disk)
-            ->open($video->video_path)
-
-            ->addFilter(function ($filters) {
-                $filters->resize(new Dimension(426, 240));
-            })
-            ->export()
-            ->toDisk('public')
-            ->inFormat($lowBitrateFormat)
-            ->save($convertedName)
-
-            ->addFilter(function ($filters) {
-                $filters->resize(new Dimension(640, 360));
-            })
-            ->export()
-            ->toDisk('public')
-            ->inFormat($low2_BitrateFormat)
-            ->save($convertedName_360)
-
-            ->addFilter(function ($filters) {
-                $filters->resize(new Dimension(854, 480));
-            })
-            ->export()
-            ->toDisk('public')
-            ->inFormat($mediumBitrateFormate)
-            ->save($convertedName_480)
-
-            ->addFilter(function ($filters) {
-                $filters->resize(new Dimension(1280, 720));
-            })
-            ->export()
-            ->toDisk('public')
-            ->inFormat($highBitrateFormate)
-            ->save($convertedName_720);
-
-            return redirect()->back()->with(
-                'success',
-                'سيكون مقطع الفيديو متوفر عندما تتنتهى معالجته'
-            );
+        return redirect()->back()->with(
+            'success',
+            'سيكون مقطع الفيديو متوفر عندما تتنتهى معالجته'
+        );
     }
 
     /**
