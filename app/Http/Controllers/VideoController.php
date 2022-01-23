@@ -49,7 +49,7 @@ class VideoController extends Controller
 
         $randomPath = Str::random(16);
         $videoPath = $randomPath . '.' . $request->video->getClientOriginalExtension();
-        $imagePath = $randomPath . '.' . $request->video->getClientOriginalExtension();
+        $imagePath = $randomPath . '.' . $request->image->getClientOriginalExtension();
 
         $image = Image::make($request->image)->resize(320, 180);
         $path = Storage::put($imagePath, $image->stream());        
