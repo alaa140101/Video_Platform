@@ -12,6 +12,10 @@ use Storage;
 
 class VideoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +23,9 @@ class VideoController extends Controller
      */
     public function index()
     {
-        //
+        $videos = auth()->user()->videos->sortByDesc('created_at');
+        $title = 'اخر الفيديوهات المرفوعة';
+        return view('videos.my-videos', compact('videos','title'));
     }
 
     /**

@@ -43,7 +43,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{{route('videos.index')}}" class="nav-link">
               <i class="fas fa-play-circle"></i>
               فيديوهاتي
             </a>
