@@ -29,6 +29,16 @@
                 <small class="text-muted">
                   <span class="d-block"><i class="fas fa-eye"></i>مشاهدة 10</span>
                   <i class="fas fa-clock"></i> <span>منذ 5 ساعات</span>
+                  @auth
+                    @if($video->user_id == auth()->user()->id || auth()->user()->administration_level > 0)
+                    <form method="POST" action="{{route('videos.destroy', $video->id)}}" onsubmit="return confirm('هل أنت متأكد أنك تريد حذف مقطع الفيديو هذا ؟')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="float-left"><i class="far fa-trash-alt text-danger fa-lg"></i></button>
+
+                    </form>
+                    @endif
+                  @endauth
                 </small>
                 </div>
             </div>
