@@ -99,7 +99,8 @@ class VideoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $video = Video::where('id', $id)->first();
+        return view('videos.edit-video', compact('video'));
     }
 
     /**

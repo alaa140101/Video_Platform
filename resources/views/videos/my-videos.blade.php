@@ -35,7 +35,12 @@
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="float-left"><i class="far fa-trash-alt text-danger fa-lg"></i></button>
+                    </form>
 
+                    <form action="{{route('videos.edit', $video->id)}}" method="get">
+                    @csrf
+                    @method('PATCH')
+                    <button class="float-left" type="submit"><i class="far fa-edit text-success fa-lg ml-3"></i></button>
                     </form>
                     @endif
                   @endauth
