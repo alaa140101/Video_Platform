@@ -2,7 +2,16 @@
 
 @section('content')
   <div class="mx-4">
-    <p class="my-4"></p>
+    <div class="row justify-content-center">
+      <form action="{{ route('video.search') }}" method="GET" class="form-inline col-md-6 justify-content-center">
+      @csrf
+        <input type="text" class="form-control mx-sm-3 mb-2" name="term">
+        <button type="submit" class="btn btn-secondary mb-2">ابحث</button>
+      </form>
+    </div>
+    <hr>
+    <br>
+    <p class="my-4">{{$title}}</p>
     <div class="row">
       @forelse ($videos as $video)
         @if ($video->processed)
