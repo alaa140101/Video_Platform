@@ -8,8 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic as Image;
 use App\Models\Video;
+use App\Models\Like;
 use Storage;
 use App\Jobs\ConvertedVideoForStreaming;
+use Illuminate\Support\Facades\Auth;
 
 
 class VideoController extends Controller
@@ -88,7 +90,16 @@ class VideoController extends Controller
      */
     public function show(Video $video)
     {
-        return view('videos.show-video', compact('video'));
+        $countLike = Like::where('video_id', $video->id)->where('like', '1')->count();
+        $countDislike = Like::where('video_id', $video->id)->where('like', '0')->count();
+
+        $user = Auth::user();
+        if(Auth::check()){
+            $userLike = $user->likes()->where('video_id', $video->id)->first();
+        } else{
+            $userLike = 0;
+        }
+        return view('videos.show-video', compact('video', 'countLike', 'countDislike','userLike'));
     }
 
     /**

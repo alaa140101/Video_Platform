@@ -24,3 +24,4 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 Route::resource('/videos', 'App\Http\Controllers\VideoController');
 
 Route::get('/video/search', 'App\Http\Controllers\VideoController@search')->name('video.search');
+Route::post('/like', 'App\Http\Controllers\LikeController@LikeVideo')->name('like');

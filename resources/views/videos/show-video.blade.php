@@ -4,6 +4,7 @@
   <div class="container">
     <div class="row">
       <div class="mx-auto col-10">
+        <input type="hidden" id="videoId" value="{{$video->id}}">
         <div class="vidcontainer">
           @foreach ($video->convertedvideos as $video_converted)
             <video id="videoPlayer" controls style='{{$video->Longitudinal == "0" ? "widht: 90vw; height: 80vh;" : "width: 70vw; height: 80vh;"}}'>
@@ -36,6 +37,34 @@
             <h5>
               {{$video->title}}
             </h5>
+          </div>
+
+          <div class="interaction text-center mt-5">
+            <a href="#" class="like ml-3">
+              @if ($userLike)
+                @if($userLike->like == 1)
+                  <i class="far fa-thumbs-up fa-2x"></i><span id="likeNumber">{{$countLike}}</span>                  
+                  @else 
+                  <i class="far fa-thumbs-up fa-2x"></i><span id="likeNumber">{{$countLike}}</span>                  
+              @endif
+              @else 
+                <i class="far fa-thumbs-up fa-2x"></i><span id="likeNumber">{{$countLike}}</span>
+              @endif 
+            </a> |
+            <a href="#" class="like mr-3">
+              @if ($userLike)
+                <i id="like_down" class="far fa-thumbs-down fa-2x"></i><span id="dislikeNumber">{{$countDislike}}</span>                  
+                @if($userLike->like == 0)
+                  <i id="like_down" class="far fa-thumbs-down fa-2x"></i><span id="dislikeNumber">{{$countDislike}}</span>
+                @endif
+              @else 
+                <i id="like_down" class="far fa-thumbs-down fa-2x"></i><span id="dislikeNumber">{{$countDislike}}</span>
+              @endif 
+            </a>
+
+            <div class="loginAlert mt-5">
+
+            </div>
           </div>
         </div>
       </div>
@@ -72,5 +101,64 @@
     video.play();
     video.currentTime = curTime;
   }
-</script>    
+</script> 
+
+<script>
+  $('.like').on('click', function(event){
+    var token = '{{ Session::token() }}';
+    var urlLike = '{{ route('like') }}';
+
+    var videoId = 0;
+
+    var AuthUser = "{{{ (Auth::user()) ? 0 : 1 }}}";
+
+    event.preventDefault();
+    
+    if(AuthUser == '1'){
+      var loginMessage = '<div class="alert alert-danger">\
+                    <ul>\
+                      <li class="loginAlert"> يجب تسجيل الدخول لكي تستطيع الإعجاب بالفيديو</li>\
+                    </ul>\
+                  </div>';
+      $('.loginAlert').html(loginMessage);
+    }else{
+      videoId = $("#videoId").val();
+      var isLike = event.target.parentNode.perviousElementSibling == null;
+      $.ajax({
+        method: 'POST',
+        url: urlLike,
+        data: {
+          isLike: isLike,
+          videoId: videoId,
+          _token: token
+        },
+        success : function(data) {
+          if($(event.target).hasClass('fa-thumbs-up')){
+            if($(event.target).hasClass('liked')){
+              $(event.target).removeClass("liked");
+            }else{
+              $(event.target).addClass("liked");
+            }
+            $('#likeNumber').html(data.countLike);
+            $('#dislikeNumber').html(data.countDislike);
+          }
+          if($(event.target).hasClass('fa-thumbs-down')){
+            if($(event.target).hasClass('liked')){
+              $(event.target).removeClass("liked");
+            }else{
+              $(event.target).addClass("liked");
+            }
+            $('#likeNumber').html(data.countLike);
+            $('#dislikeNumber').html(data.countDislike);
+          }
+          if(isLike){
+            $(".fa-thumbs-down").removeClass("liked");
+          }else{
+            $(".fa-thumbs-up").removeClass("liked");
+          }
+        }
+      })
+    }
+  });
+</script> 
 @endsection
