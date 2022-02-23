@@ -43,7 +43,7 @@
             <a href="#" class="like ml-3">
               @if ($userLike)
                 @if($userLike->like == 1)
-                  <i class="far fa-thumbs-up fa-2x"></i><span id="likeNumber">{{$countLike}}</span>                  
+                  <i class="far fa-thumbs-up fa-2x liked"></i><span id="likeNumber">{{$countLike}}</span>                  
                   @else 
                   <i class="far fa-thumbs-up fa-2x"></i><span id="likeNumber">{{$countLike}}</span>                  
               @endif
@@ -53,8 +53,9 @@
             </a> |
             <a href="#" class="like mr-3">
               @if ($userLike)
-                <i id="like_down" class="far fa-thumbs-down fa-2x"></i><span id="dislikeNumber">{{$countDislike}}</span>                  
                 @if($userLike->like == 0)
+                <i id="like_down" class="far fa-thumbs-down fa-2x liked"></i><span id="dislikeNumber">{{$countDislike}}</span>                  
+                @else 
                   <i id="like_down" class="far fa-thumbs-down fa-2x"></i><span id="dislikeNumber">{{$countDislike}}</span>
                 @endif
               @else 
@@ -123,7 +124,7 @@
       $('.loginAlert').html(loginMessage);
     }else{
       videoId = $("#videoId").val();
-      var isLike = event.target.parentNode.perviousElementSibling == null;
+      var isLike = event.target.parentNode.previousElementSibling == null;
       $.ajax({
         method: 'POST',
         url: urlLike,
