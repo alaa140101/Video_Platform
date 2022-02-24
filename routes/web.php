@@ -25,3 +25,5 @@ Route::resource('/videos', 'App\Http\Controllers\VideoController');
 
 Route::get('/video/search', 'App\Http\Controllers\VideoController@search')->name('video.search');
 Route::post('/like', 'App\Http\Controllers\LikeController@LikeVideo')->name('like');
+
+Route::post('/view', 'App\Http\Controllers\VideoController@addView')->name('view');

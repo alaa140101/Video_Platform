@@ -41,27 +41,23 @@
 
           <div class="interaction text-center mt-5">
             <a href="#" class="like ml-3">
-              @if ($userLike)
-                @if($userLike->like == 1)
-                  <i class="far fa-thumbs-up fa-2x liked"></i><span id="likeNumber">{{$countLike}}</span>                  
-                  @else 
-                  <i class="far fa-thumbs-up fa-2x"></i><span id="likeNumber">{{$countLike}}</span>                  
-              @endif
+              @if ($userLike && $userLike->like == 1)
+                <i class="far fa-thumbs-up fa-2x liked"></i><span id="likeNumber">{{$countLike}}</span>                  
               @else 
                 <i class="far fa-thumbs-up fa-2x"></i><span id="likeNumber">{{$countLike}}</span>
               @endif 
             </a> |
             <a href="#" class="like mr-3">
-              @if ($userLike)
-                @if($userLike->like == 0)
-                <i id="like_down" class="far fa-thumbs-down fa-2x liked"></i><span id="dislikeNumber">{{$countDislike}}</span>                  
-                @else 
-                  <i id="like_down" class="far fa-thumbs-down fa-2x"></i><span id="dislikeNumber">{{$countDislike}}</span>
-                @endif
+              @if ($userLike && ($userLike->like == 0))
+                <i id="like_down" class="far fa-thumbs-down fa-2x liked"></i><span id="dislikeNumber">{{$countDislike}}</span>
               @else 
                 <i id="like_down" class="far fa-thumbs-down fa-2x"></i><span id="dislikeNumber">{{$countDislike}}</span>
               @endif 
             </a>
+
+            @foreach ($video->views as $view)
+                <span class="float-right">عدد المشاهدات <span class="viewsNumber">{{$view->views_number}}</span></span>
+            @endforeach
 
             <div class="loginAlert mt-5">
 
@@ -81,6 +77,7 @@
     var video = document.getElementById("videoPlayer");
     curTime = video.currentTime;
     var selected = document.getElementById("qualityPick").value;
+    
 
     if(selected == '1080') {
       source = document.getElementById("webm_source").src = "{{ Storage::url($video_converted->webm_Format_1080) }}";
@@ -98,6 +95,7 @@
       source = document.getElementById("webm_source").src = "{{ Storage::url($video_converted->webm_Format_240) }}";
       source = document.getElementById("mp4_source").src = "{{ Storage::url($video_converted->mp4_Format_240) }}";
     }
+
     video.load();
     video.play();
     video.currentTime = curTime;
@@ -162,4 +160,25 @@
     }
   });
 </script> 
+
+<script>
+  $('#videoPlayer').on('ended', function(e){
+      event.preventDefault();
+      const token = '{{ Session::token() }}';
+      const urlComment = '{{ route('view') }}';
+      const videoId = $("#videoId").val();
+
+      $.ajax({
+          method: 'POST',
+          url: urlComment, 
+          data: {
+              videoId: videoId,
+              _token: token
+          },
+          success : function(data) {
+            $(".viewsNumber").html(data.viewsNumbers);
+          }
+      })
+  })
+</script>
 @endsection

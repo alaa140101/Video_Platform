@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic as Image;
 use App\Models\Video;
 use App\Models\Like;
+use App\Models\View;
 use Storage;
 use App\Jobs\ConvertedVideoForStreaming;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,7 @@ class VideoController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except(['show', 'addView']);
     }
     /**
      * Display a listing of the resource.
@@ -72,6 +73,12 @@ class VideoController extends Controller
             'image_path' => $imagePath,
             'title' => $request->title,
             'user_id' => auth()->id(),
+        ]);
+
+        $view = View::create([
+            'video_id' => $video->id,
+            'user_id' => auth()->id(),
+            'views_number' => 0
         ]);
 
         ConverVideoForStreaming::dispatch($video);     
@@ -190,5 +197,18 @@ class VideoController extends Controller
         $videos  =  Video::where('title', 'like', "%{$request->term}%")->paginate(12);
         $title = 'عرض نتايج البحث عن: '. $request->term;
         return view('videos.my-videos', compact('videos', 'title'));
+    }
+
+    public function addView(Request $request){
+        $views = View::where('video_id', $request->videoId)->first();
+
+        $views->views_number++;
+
+        $views->save();
+
+        $viewsNumbers = $views->views_number;
+
+        return response()->json(['viewsNumbers' => $viewsNumbers]);
+
     }
 }
