@@ -84,6 +84,20 @@
                               <img src="{{$comment->user->profile_photo_url}}" alt="avatar" width="150px" class="rounded-full">
                             </div>
                             <div class="col-10 text-right">
+                              @auth
+                                @if($comment->user_id == auth()->user()->id || auth()->user()->administration_level > 0)
+                                  <form action="{{route('comment.destroy', $comment->id)}}" method="get" onsubmit="return confirm('هل أنت متأكد أنك تريد حذف هذا التعليق؟')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="float-left" type="submit"><i class="far fa-trash-alt text-danger fa-lg"></i></button>
+                                  </form>
+                                  <form action="{{route('comment.edit', $comment->id)}}" method="get">
+                                  @csrf
+                                  @method('PATCH')
+                                  <button class="float-left" type="submit"><i class="far fa-edit text-success fa-lg ml-3"></i></button>
+                                  </form>
+                                @endif 
+                              @endauth
                               <p class="my-3"><strong>{{$comment->user->name}}</strong></p>
                               <i class="far fa-clock"></i><span class="comment_date text-secondary">{{$comment->created_at->diffForHumans()}}</span>
                               <p class="mt-3">{{$comment->body}}</p>
@@ -257,6 +271,12 @@
         success: function(data) {
           $("#comment").val('');
 
+          destroyUrl = "{{route('comment.destroy', 'des_id')}}";
+          destroy = destroyUrl.replace('des_id', data.commentId);
+
+          editUrl = "route('comment.edit', 'edit_id')}}";
+          edit = editUrl.replace('edit_id', data.comment_Id);
+
           let html = `<div class="card mt-5 mb-3">
                         <div class="card-body">
                           <div class="row">
@@ -264,6 +284,16 @@
                               <img src="`+data.userImage+`" alt="avatar" width="150px" class="rounded-full">
                             </div>
                             <div class="col-10 text-right">
+                              <form action="`+destroy+`" method="get">
+                                @csrf
+                                @method('DELETE')
+                                <button class="float-left" type="submit"><i class="far fa-trash-alt text-danger fa-lg"></i></button>
+                              </form>
+                              <form action="`+edit+`" method="get">
+                              @csrf
+                              @method('PATCH')
+                              <button class="float-left" type="submit"><i class="far fa-edit text-success fa-lg ml-3"></i></button>
+                              </form>
                               <p class="my-3"><strong>`+data.userName+`</strong></p>
                               <i class="far fa-clock"></i><span class="comment_date text-secondary">`+data.commentDate+`</span>
                               <p class="mt-3">`+comment+`</p>

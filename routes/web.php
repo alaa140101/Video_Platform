@@ -29,3 +29,6 @@ Route::post('/like', 'App\Http\Controllers\LikeController@LikeVideo')->name('lik
 Route::post('/view', 'App\Http\Controllers\VideoController@addView')->name('view');
 
 Route::post('/comment', 'App\Http\Controllers\CommentController@saveComment')->name('comment');
+Route::get('/comment/{id}/edit', 'App\Http\Controllers\CommentController@edit')->name('comment.edit');
+Route::patch('/comment/{id}', 'App\Http\Controllers\CommentController@update')->name('comment.update');
+Route::get('/comment/{id}', 'App\Http\Controllers\CommentController@destroy')->name('comment.destroy');
