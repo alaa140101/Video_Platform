@@ -106,7 +106,10 @@ class VideoController extends Controller
         } else{
             $userLike = 0;
         }
-        return view('videos.show-video', compact('video', 'countLike', 'countDislike','userLike'));
+
+        $comments = $video->comments->sortByDesc('created_at');
+
+        return view('videos.show-video', compact('video', 'countLike', 'countDislike','userLike', 'comments'));
     }
 
     /**

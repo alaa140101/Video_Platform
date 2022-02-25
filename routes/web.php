@@ -27,3 +27,5 @@ Route::get('/video/search', 'App\Http\Controllers\VideoController@search')->name
 Route::post('/like', 'App\Http\Controllers\LikeController@LikeVideo')->name('like');
 
 Route::post('/view', 'App\Http\Controllers\VideoController@addView')->name('view');
+
+Route::post('/comment', 'App\Http\Controllers\CommentController@saveComment')->name('comment');

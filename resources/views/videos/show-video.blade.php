@@ -3,11 +3,11 @@
 @section('content')
   <div class="container">
     <div class="row">
-      <div class="mx-auto col-10">
+      <div class="mx-auto col-9">
         <input type="hidden" id="videoId" value="{{$video->id}}">
         <div class="vidcontainer">
           @foreach ($video->convertedvideos as $video_converted)
-            <video id="videoPlayer" controls style='{{$video->Longitudinal == "0" ? "widht: 90vw; height: 80vh;" : "width: 70vw; height: 80vh;"}}'>
+            <video id="videoPlayer" controls style='{{$video->Longitudinal == "0" ? "width: 100%; height: 80vh;" : "width: 70vw; height: 80vh;"}}'>
               @if ($video->quality == 1080)
                 <source id="webm_source" src="{{ Storage::url($video_converted->webm_Format_1080) }}" type="video/webm">                  
                 <source id="mp4_source" src="{{ Storage::url($video_converted->mp4_Format_1080) }}" type="video/mp4">                  
@@ -61,6 +61,40 @@
 
             <div class="loginAlert mt-5">
 
+            </div>
+
+            <div class="mt-4 px-2">
+              <div class="comments">
+                <div class="mb-3">
+                  <span>التعليقات</span>
+                </div>
+                <div class="">
+                  <textarea name="" id="comment" rows="5" class="form-control" placeholder="اضف تعليقا"></textarea>
+                  <button type="submit" class="btn btn-info mt-3 saveComment">تعليق</button>
+                  <div class="commentAlert mt-5">
+
+                  </div>
+
+                  <div class="commentBody">
+                    @foreach ($comments as $comment)
+                      <div class="card mt-5 mb-3">
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-2">
+                              <img src="{{$comment->user->profile_photo_url}}" alt="avatar" width="150px" class="rounded-full">
+                            </div>
+                            <div class="col-10 text-right">
+                              <p class="my-3"><strong>{{$comment->user->name}}</strong></p>
+                              <i class="far fa-clock"></i><span class="comment_date text-secondary">{{$comment->created_at->diffForHumans()}}</span>
+                              <p class="mt-3">{{$comment->body}}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>                        
+                    @endforeach
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -179,6 +213,68 @@
             $(".viewsNumber").html(data.viewsNumbers);
           }
       })
+  })
+</script>
+
+<script>
+  $('.saveComment').on('click', function(event) {
+    const token = '{{ Session::token() }}';
+    const urlComment = '{{ route('comment') }}';
+
+    let videoId = 0;
+    const AuthUser = "{{{ (Auth::user()) ? 0 : 1 }}}";
+
+    if(AuthUser == '1') {
+      event.preventDefault();
+      const commentMessage = '<div class="alert alert-danger">\
+                              <ul>\
+                                <li>يجب تسجيل الدخول لكي تستطيع التعليق على الفيديو </li>\
+                              </ul>\
+                            </div>';
+      $(".commentAlert").html(commentMessage);
+    }
+    else if ($('#comment').val().length == 0) {
+      const commentMessage = '<div class="alert alert-danger">\
+                                <ul>\
+                                  <li> الرجاء كتابة تعليق</li>\
+                                </ul>\
+                              </div>';
+      $(".commentAlert").html(commentMessage);
+    }else{
+      $(".commentAlert").html('');
+      event.preventDefault();
+      videoId = $("#videoId").val();
+      comment = $("#comment").val();
+
+      $.ajax({
+        method: 'POST',
+        url: urlComment,
+        data: {
+          comment: comment,
+          videoId: videoId,
+          _token: token 
+        },
+        success: function(data) {
+          $("#comment").val('');
+
+          let html = `<div class="card mt-5 mb-3">
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-2">
+                              <img src="`+data.userImage+`" alt="avatar" width="150px" class="rounded-full">
+                            </div>
+                            <div class="col-10 text-right">
+                              <p class="my-3"><strong>`+data.userName+`</strong></p>
+                              <i class="far fa-clock"></i><span class="comment_date text-secondary">`+data.commentDate+`</span>
+                              <p class="mt-3">`+comment+`</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>`; 
+          $(".commentBody").prepend(html);
+        }
+      })
+    }
   })
 </script>
 @endsection
