@@ -2,6 +2,17 @@
 
 @section('content')
   <div class="mx-4">
+    @if($videos->count() > 0)
+    <div class="row justify-content-center">
+      <form method="POST" action="{{route('history.destroyAll')}}" onsubmit="return confirm('هل أنت متأكد أنك تريد حذف جميع المشاهدات ؟')">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-secondary mb-2">حذف السجل</button>
+      </form>              
+    </div>
+    <hr>
+      @endif
+      <br>
     <p class="my-4">{{$title}}</p>
     <div class="row">
       @forelse ($videos as $video)
@@ -33,7 +44,7 @@
                   <i class="fas fa-clock"></i> <span> {{$video->pivot->created_at->diffForHumans()}}</span>
                   @auth
                     @if($video->user_id == auth()->user()->id || auth()->user()->administration_level > 0)
-                    <form method="POST" action="#" onsubmit="return confirm('هل أنت متأكد أنك تريد حذف مقطع الفيديو هذا ؟')">
+                    <form method="POST" action="{{route('history.destroy', $video->pivot->id)}}" onsubmit="return confirm('هل أنت متأكد أنك تريد حذف مقطع الفيديو هذا ؟')">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="float-left"><i class="far fa-trash-alt text-danger fa-lg"></i></button>

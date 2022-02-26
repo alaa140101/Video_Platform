@@ -17,4 +17,16 @@ class HistoryController extends Controller
         $title = 'سجل المشاهدة';
         return view('history.history-index', compact('videos', 'title'));
     }
+
+    public function destroy($id){
+        auth()->user()->videoInHistory()->wherePivot('id', $id)->detach();
+
+        return back()->with('success', 'تم حذف المقطع من سجلات المشاهدة');
+    }
+
+    public function destroyAll(){
+        auth()->user()->videoInHistory()->detach();
+
+        return redirect()->back()->with('success', 'تم حذف سجل المشاهدة');
+    }
 }
