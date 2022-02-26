@@ -32,3 +32,5 @@ Route::post('/comment', 'App\Http\Controllers\CommentController@saveComment')->n
 Route::get('/comment/{id}/edit', 'App\Http\Controllers\CommentController@edit')->name('comment.edit');
 Route::patch('/comment/{id}', 'App\Http\Controllers\CommentController@update')->name('comment.update');
 Route::get('/comment/{id}', 'App\Http\Controllers\CommentController@destroy')->name('comment.destroy');
+
+Route::get('/history', 'App\Http\Controllers\HistoryController@index')->name('history');
