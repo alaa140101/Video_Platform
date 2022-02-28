@@ -25,32 +25,34 @@
     
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mx-auto">
-          <li class="nav-item">
+          <li class="nav-item {{ request()->is('/') ? 'active' : '' }}">
             <a href="{{ route('main') }}" class="nav-link">
               <i class="fas fa-home"></i>
               الصفحة الرئيسة
             </a>
           </li>
-          <li class="nav-item">
+          @auth              
+          <li class="nav-item {{ request()->is('history') ? 'active' : '' }}">
             <a href="{{route('history')}}" class="nav-link">
               <i class="fas fa-history"></i>
               سجل المشاهدة
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item {{ request()->is('videos/create*') ? 'active' : '' }}">
             <a href="{{route('videos.create')}}" class="nav-link">
               <i class="fas fa-upload"></i>
               رفع الفيديو
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item {{ request()->is('videos/index') ? 'active' : '' }}">
             <a href="{{route('videos.index')}}" class="nav-link">
               <i class="fas fa-play-circle"></i>
               فيديوهاتي
             </a>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
+          @endauth
+          <li class="nav-item {{ request()->is('channels*') ? 'active' : '' }}">
+            <a href="{{ route('channels.index') }}" class="nav-link">
               <i class="fas fa-film"></i>
               القنوات
             </a>

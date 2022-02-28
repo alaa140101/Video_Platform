@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', 'App\Http\Controllers\MainController@index')->name('main');
+Route::get('/main/{channel}/videos', 'App\Http\Controllers\MainController@channelsVideos')->name('main.channels.videos');
+
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('layouts.main');
@@ -38,3 +40,6 @@ Route::get('/comment/{id}', 'App\Http\Controllers\CommentController@destroy')->n
 Route::get('/history', 'App\Http\Controllers\HistoryController@index')->name('history');
 Route::delete('/history/{id}', 'App\Http\Controllers\HistoryController@destroy')->name('history.destroy');
 Route::delete('/destroyAll', 'App\Http\Controllers\HistoryController@destroyAll')->name('history.destroyAll');
+
+Route::get('/channels', 'App\Http\Controllers\ChannelController@index')->name('channels.index');
+Route::get('/channels/search', 'App\Http\Controllers\ChannelController@search')->name('channels.search');

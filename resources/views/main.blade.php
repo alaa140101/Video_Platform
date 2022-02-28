@@ -2,21 +2,12 @@
 
 @section('content')
   <div class="mx-4">
-    <div class="row justify-content-center">
-      <form action="{{ route('video.search') }}" method="GET" class="form-inline col-md-6 justify-content-center">
-      @csrf
-        <input type="text" class="form-control mx-sm-3 mb-2" name="term">
-        <button type="submit" class="btn btn-secondary mb-2">ابحث</button>
-      </form>
-    </div>
-    <hr>
-    <br>
     <p class="my-4">{{$title}}</p>
     <div class="row">
       @forelse ($videos as $video)
         @if ($video->processed)
           <div class="col-sm-6 col-md-4 col-lg-3">
-            <div class="card">
+            <div class="card p-1 mb-4">
               <div class="card-icons">
                 @php
                   $hours_add_zero = sprintf("%02d", $video->hours);
