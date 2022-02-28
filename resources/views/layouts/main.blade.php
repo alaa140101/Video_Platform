@@ -26,7 +26,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mx-auto">
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{{ route('main') }}" class="nav-link">
               <i class="fas fa-home"></i>
               الصفحة الرئيسة
             </a>
