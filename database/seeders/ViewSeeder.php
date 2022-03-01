@@ -22,7 +22,7 @@ class ViewSeeder extends Seeder
             'views_number' => '70',
         ]); 
         $view2 = View::create([
-            'user_id' => User::where('name', 'academy-hsoub')->first()->id,
+            'user_id' => User::where('name', 'Ana')->first()->id,
             'video_id' => Video::where('title', 'Flowers')->first()->id,
             'views_number' => '50',
         ]); 

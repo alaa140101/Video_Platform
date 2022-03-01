@@ -13,7 +13,7 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item {{ request()->is('admin') ? 'active' : '' }}">
-        <a class="nav-link text-right" href="#">
+        <a class="nav-link text-right" href="{{ route('admin.index')}}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>الإحصائيات</span></a>
       </li>

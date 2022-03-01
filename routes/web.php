@@ -13,9 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/admin', function () {
-    return view('theme.default');
-});
 
 Route::get('/', 'App\Http\Controllers\MainController@index')->name('main');
 Route::get('/main/{channel}/videos', 'App\Http\Controllers\MainController@channelsVideos')->name('main.channels.videos');
@@ -43,3 +40,5 @@ Route::delete('/destroyAll', 'App\Http\Controllers\HistoryController@destroyAll'
 
 Route::get('/channels', 'App\Http\Controllers\ChannelController@index')->name('channels.index');
 Route::get('/channels/search', 'App\Http\Controllers\ChannelController@search')->name('channels.search');
+
+Route::get('/admin', 'App\Http\Controllers\AdminsController@index')->name('admin.index');
