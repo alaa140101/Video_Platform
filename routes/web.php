@@ -41,4 +41,8 @@ Route::delete('/destroyAll', 'App\Http\Controllers\HistoryController@destroyAll'
 Route::get('/channels', 'App\Http\Controllers\ChannelController@index')->name('channels.index');
 Route::get('/channels/search', 'App\Http\Controllers\ChannelController@search')->name('channels.search');
 
-Route::get('/admin', 'App\Http\Controllers\AdminsController@index')->name('admin.index');
+
+Route::prefix('/admin')->middleware('can:update-videos')->group(function() {
+    Route::get('/', 'App\Http\Controllers\AdminsController@index')->name('admin.index');
+
+});

@@ -74,6 +74,9 @@
                 <img src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" class="h-8 w-8 rounded-full">
               </a>
               <div class="dropdown-menu dropdown-menu-left px-2 text-right mt-2">
+                @can('update-videos')
+                  <a href="{{ route('admin.index') }}" class="dropdown-item text-right">لوحة الإدارة</a>
+                @endcan                
                 <div class="pt-4 pb-1 border-t border-gray-200">
                   <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
                   <div class="pt-2 pb-3 space-y-1">
