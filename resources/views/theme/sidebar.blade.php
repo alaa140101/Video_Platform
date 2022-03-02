@@ -24,7 +24,7 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item {{ request()->is('admin/channels') ? 'active' : '' }}">
-        <a class="nav-link text-right" href="#">
+        <a class="nav-link text-right" href="{{ route('channels.index') }}">
         <i class="fas fa-user-lock"></i>
           <span>الصلاحيات</span>
         </a>

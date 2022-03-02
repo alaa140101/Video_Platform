@@ -19,4 +19,11 @@ class ChannelController extends Controller
         $title = ' عرض نتائج البحث عن: ' . $request->term;
         return view('channels', compact('channels', 'title'));
     }
+
+    public function adminIndex(){
+
+        $channels = User::all();
+
+        return view('admin.channels.index', compact('channels'));
+    }
 }
