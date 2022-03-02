@@ -26,4 +26,17 @@ class ChannelController extends Controller
 
         return view('admin.channels.index', compact('channels'));
     }
+
+    public function adminUpdate(Request $request, User $channel)
+    {
+        // dd($request->administration_level);
+        // dd($channel->administration_level);
+        $channel->administration_level = $request->administration_level;
+
+        $channel->save();
+
+        session()->flash('flash_message', 'تم تعديل صلاحيات القناة بنجاح');
+
+        return redirect(route('channels.index'));
+    }
 }
