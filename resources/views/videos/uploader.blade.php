@@ -7,6 +7,11 @@
       <div class="card-header text-center">
         رفع فيديو جديد
       </div>
+      @if (auth()->user()->block)
+        <div class="alert alert-danger" role="alert">
+          للأسف قناتك محظورة
+        </div>
+      @else 
       <div class="card-body">
         <form action="{{ route('videos.store') }}" method="post" enctype="multipart/form-data">
           @csrf
@@ -52,7 +57,10 @@
             </div>
           </div>
         </form>
+      
+      
       </div>
+      @endif
     </div>
   </div>
 </div>

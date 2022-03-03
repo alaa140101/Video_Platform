@@ -86,16 +86,18 @@
                             <div class="col-10 text-right">
                               @auth
                                 @if($comment->user_id == auth()->user()->id || auth()->user()->administration_level > 0)
-                                  <form action="{{route('comment.destroy', $comment->id)}}" method="get" onsubmit="return confirm('هل أنت متأكد أنك تريد حذف هذا التعليق؟')">
+                                  @if(!auth()->user()->block)
+                                      <form action="{{route('comment.destroy', $comment->id)}}" method="get" onsubmit="return confirm('هل أنت متأكد أنك تريد حذف هذا التعليق؟')">
+                                      @csrf
+                                      @method('DELETE')
+                                      <button class="float-left" type="submit"><i class="far fa-trash-alt text-danger fa-lg"></i></button>
+                                    </form>
+                                    <form action="{{route('comment.edit', $comment->id)}}" method="get">
                                     @csrf
-                                    @method('DELETE')
-                                    <button class="float-left" type="submit"><i class="far fa-trash-alt text-danger fa-lg"></i></button>
-                                  </form>
-                                  <form action="{{route('comment.edit', $comment->id)}}" method="get">
-                                  @csrf
-                                  @method('PATCH')
-                                  <button class="float-left" type="submit"><i class="far fa-edit text-success fa-lg ml-3"></i></button>
-                                  </form>
+                                    @method('PATCH')
+                                    <button class="float-left" type="submit"><i class="far fa-edit text-success fa-lg ml-3"></i></button>
+                                    </form>
+                                  @endif
                                 @endif 
                               @endauth
                               <p class="my-3"><strong>{{$comment->user->name}}</strong></p>
@@ -158,6 +160,7 @@
     var videoId = 0;
 
     var AuthUser = "{{{ (Auth::user()) ? 0 : 1 }}}";
+    var blocked = "{{{ (Auth::user()) ? (Auth::user()->block) ? 1 : 0 : 2 }}}";
 
     event.preventDefault();
     
@@ -168,7 +171,16 @@
                     </ul>\
                   </div>';
       $('.loginAlert').html(loginMessage);
-    }else{
+    }else if (blocked == '1'){
+      var html = `<div class="alert alert-danger">
+                  <ul>
+                    <li class="loginAlert"> أنت ممنوع من الاعجاب</li>
+                  </ul>
+                  </div>`;
+      $(".loginAlert").html(html);
+    }
+    
+    else{
       videoId = $("#videoId").val();
       var isLike = event.target.parentNode.previousElementSibling == null;
       $.ajax({
@@ -237,6 +249,8 @@
 
     let videoId = 0;
     const AuthUser = "{{{ (Auth::user()) ? 0 : 1 }}}";
+    const blocked = "{{{ (Auth::user()) ? (Auth::user()->block) ? 1 : 0 : 2 }}}";
+
 
     if(AuthUser == '1') {
       event.preventDefault();
@@ -246,6 +260,14 @@
                               </ul>\
                             </div>';
       $(".commentAlert").html(commentMessage);
+    }
+    else if (blocked == '1'){
+      var html = `<div class="alert alert-danger">
+                    <ul>
+                        <li class="commentAlert"> أنت ممنوع من التعليق </li>
+                    </ul>
+                  </div>`;
+      $(".commentAlert").html(html);
     }
     else if ($('#comment').val().length == 0) {
       const commentMessage = '<div class="alert alert-danger">\

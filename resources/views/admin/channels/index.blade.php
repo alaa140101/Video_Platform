@@ -56,7 +56,7 @@
                 </form>
                </td>
                <td>
-                <form action="#" style="display: inline-block" method="post">
+                <form action="{{ route('channels.block', $channel)}}" style="display: inline-block" method="post">
                   @method('PATCH')
                   @csrf
                   {{-- ليس مدير عام ولا صاحب القناة --}}

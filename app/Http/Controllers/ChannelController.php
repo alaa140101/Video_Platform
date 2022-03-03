@@ -29,8 +29,6 @@ class ChannelController extends Controller
 
     public function adminUpdate(Request $request, User $channel)
     {
-        // dd($request->administration_level);
-        // dd($channel->administration_level);
         $channel->administration_level = $request->administration_level;
 
         $channel->save();
@@ -45,6 +43,21 @@ class ChannelController extends Controller
         $user->delete();
 
         session()->flash('flash_message', 'تم حذف القناة بنجاح');
+
+        return redirect(route('channels.index'));
+    }
+
+    public function adminBlock(User $user)
+    {
+        $user->block = !$user->block;
+        // dd($user->block);
+       
+        $user->save();
+
+
+        $message = $user->block ? 'الغاء الحظر' : 'حظر';
+
+        session()->flash('flash_message', 'تم '.$message.' القناة بنجاح');
 
         return redirect(route('channels.index'));
     }
