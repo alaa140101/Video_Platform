@@ -43,7 +43,7 @@
                 </form>
                </td>
                <td>
-                <form action="{{ route('channels.destroy', $channel)}}" style="display: inline-block" method="post">
+                <form action="{{ route('channels.delete', $channel)}}" style="display: inline-block" method="post">
                   @method('DELETE')
                   @csrf
                   @if (auth()->user()->isSuperAdmin())
@@ -67,7 +67,7 @@
                       <button class="btn btn-warning btn-sm" type="submit" onclick="return confirm('هل أنت متأكد أنك تريد حظر القناة')"> <i class="fas fa-lock"></i>حظر  </button>
                       @endif
                   @else                      
-                    <button class="btn btn-warning btn-sm disabled"> <i class="fas fa-lock"></i> حظر</button>
+                    <span class="btn-warning btn-sm disabled"> <i class="fas fa-lock"></i> حظر</span>
                   @endif
                 </form>
                </td>

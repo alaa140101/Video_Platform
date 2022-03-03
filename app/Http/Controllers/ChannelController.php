@@ -39,4 +39,13 @@ class ChannelController extends Controller
 
         return redirect(route('channels.index'));
     }
+
+    public function adminDestroy(User $user)
+    {
+        $user->delete();
+
+        session()->flash('flash_message', 'تم حذف القناة بنجاح');
+
+        return redirect(route('channels.index'));
+    }
 }
