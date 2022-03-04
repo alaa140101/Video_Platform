@@ -32,7 +32,7 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item {{ request()->is('admin/channels/blocked*') ? 'active' : '' }}">
-        <a class="nav-link text-right" href="#">
+        <a class="nav-link text-right" href="{{ route('channels.blocked') }}">
         <i class="fas fa-lock"></i>
           <span>القنوات المحظورة</span>
         </a>

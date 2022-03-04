@@ -50,15 +50,19 @@ class ChannelController extends Controller
     public function adminBlock(User $user)
     {
         $user->block = !$user->block;
-        // dd($user->block);
-       
         $user->save();
 
 
-        $message = $user->block ? 'الغاء الحظر' : 'حظر';
+        $message = $user->block ? ' حظر' : 'الغاء حظر';
 
         session()->flash('flash_message', 'تم '.$message.' القناة بنجاح');
 
         return redirect(route('channels.index'));
+    }
+
+    public function blockedChannels()
+    {
+        $channels = User::where('block', 1)->get();
+        return view('admin.channels.blocked-channels', compact('channels'));
     }
 }
