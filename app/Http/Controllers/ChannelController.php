@@ -65,4 +65,9 @@ class ChannelController extends Controller
         $channels = User::where('block', 1)->get();
         return view('admin.channels.blocked-channels', compact('channels'));
     }
+
+    public function allChannels() {
+        $channels = User::all()->sortByDesc('created_at');
+        return view('admin.channels.all', compact('channels'));
+    }
 }

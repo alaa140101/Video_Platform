@@ -40,7 +40,7 @@
 
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item {{ request()->is('admin/allChannels*') ? 'active' : '' }}">
-        <a class="nav-link text-right" href="#">
+        <a class="nav-link text-right" href="{{ route('channels.all') }}">
         <i class="fas fa-film"></i>
           <span>القنوات</span>
         </a>

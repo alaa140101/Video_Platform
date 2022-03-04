@@ -5,7 +5,7 @@
 @endsection
 
 @section('heading')
-  صلاحيات القنوات
+   القنوات المحظورة
 @endsection
 
 @section('content')

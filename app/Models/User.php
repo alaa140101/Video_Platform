@@ -94,4 +94,8 @@ class User extends Authenticatable
     {
         return $this->administration_level > 1 ? true : false;
     }    
+
+    public function views() {
+        return $this->hasMany('App\Models\View');
+    }
 }
