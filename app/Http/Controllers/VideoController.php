@@ -218,4 +218,22 @@ class VideoController extends Controller
         return response()->json(['viewsNumbers' => $viewsNumbers]);
 
     }
+
+    public function mostViewedVideos() {
+        $mostViewedVideos = View::orderBy('views_number', 'Desc')
+        ->take(2)
+        ->get(['user_id', 'video_id', 'views_number']);
+
+        $videoNames = [];
+        $videoViews = [];
+        foreach ($mostViewedVideos as $view) {
+            array_push($videoNames,Video::find($view->video->id)->title);
+            array_push($videoViews, $view->views_number);
+        }
+
+        return view('admin.most-Viewed-Videos', 
+        compact('mostViewedVideos'))
+        ->with('videoNames', json_encode($videoNames,JSON_NUMERIC_CHECK))
+        ->with('videoViews', json_encode($videoViews,JSON_NUMERIC_CHECK));
+    }
 }

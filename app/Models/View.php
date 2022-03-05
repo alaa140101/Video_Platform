@@ -15,6 +15,7 @@ class View extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+    
     public function video()
     {
         return $this->belongsTo('App\Models\Video');
