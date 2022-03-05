@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\RealNotification;
 use App\Models\Convertedvideo;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -173,6 +174,12 @@ class ConverVideoForStreaming implements ShouldQueue
 
         $converted_video->save();
 
+        $data = [
+            'video_title' => $this->video->title,
+        ];
+
+        event(new RealNotification($data));
+
         $this->video->update([
             'processed' => true,
             'hours' => $hours,
@@ -180,6 +187,7 @@ class ConverVideoForStreaming implements ShouldQueue
             'seconds' => $seconds,
             'quality' => $quality,
         ]);
+
     }
 
     public function getFileName($fileName, $type)

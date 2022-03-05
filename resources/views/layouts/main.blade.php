@@ -14,6 +14,9 @@
 
   <link rel="stylesheet" href="{{asset('css/app.css')}}">
   <link rel="stylesheet" href="{{asset('css/style.css')}}">
+  
+  <link href="{!! asset('theme/css/sb-admin-2.min.css') !!}" rel="stylesheet">
+
 </head>
 <body dir="rtl" style="text-align: right">
   <div>
@@ -59,6 +62,37 @@
           </li>
         </ul>
         <ul class="navbar-nav mr-auto">
+          <div class="topbar" style="z-index: 1">
+            @auth
+            <li class="nav-item dropdown no-arrow alert-dropdown mx-1">
+              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-bell fa-fw fa-lg"></i>
+                  <!-- Counter - Alerts -->
+                  <span class="badge badge-danger badge-counter" data-count="0">0</span>
+              </a>
+              <!-- Dropdown - Alerts -->
+              <div class="dropdown-list dropdown-menu dropdown-menu-right text-right mt-2"
+                  aria-labelledby="alertsDropdown">
+                  <a class="dropdown-item d-flex align-items-center" href="#">
+                      <div class="ml-3">
+                          <div class="icon-circle bg-secondary">
+                              <i class="far fa-bell text-white"></i>
+                          </div>
+                      </div>
+                      <div>
+                          <div class="small text-gray-500">December 12, 2019</div>
+                          <span>A new monthly report is ready to download!</span>
+                      </div>
+                  </a>   
+                  <div class="alert-body">
+                    
+                  </div>               
+                  <a class="dropdown-item text-center small text-gray-500" href="#">عرض جميع الاشعارات</a>
+                </div>
+            </li>
+            @endauth
+          </div>
           @guest
             <li class="nav-item mt-2">
               <a href="{{ route('login') }}" class="nav-link">{{__('تسجيل دخول')}}</a>
@@ -175,7 +209,24 @@
     @yield('content')
 
   </main>
-  
+  <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+
+  <script>
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('6946d34cf373221a6f6e', {
+      cluster: 'mt1'
+    });
+  </script>
   @yield('script')
 </body>
 </html>
+
+{{-- 
+PUSHER_APP_ID=1356995
+PUSHER_APP_KEY=6946d34cf373221a6f6e
+PUSHER_APP_SECRET=38b16befea0c16f11f8f
+PUSHER_APP_CLUSTER=mt1
+  --}}
