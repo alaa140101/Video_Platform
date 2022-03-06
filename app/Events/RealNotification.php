@@ -21,7 +21,7 @@ class RealNotification implements ShouldBroadcast
      * @return void
      */
 
-    public $data;
+    public $date;
     public $video_title;
 
     public function __construct($data = [])
