@@ -15,6 +15,7 @@ use FFMpeg\Coordinate\Dimension;
 use FFMpeg\Format\Video\X264;
 use FFMpeg;
 use App\Models\Video;
+use App\Models\Alert;
 use FFMpeg\Filters\Video\VideoFilters;
 use FFMpeg\Format\Video\WebM;
 use Storage;
@@ -186,6 +187,11 @@ class ConverVideoForStreaming implements ShouldQueue
         ];
 
         event(new RealNotification($data));
+
+        $alert = Alert::where('user_id', $this->video->user_id)->first();
+
+        $alert->alert++;
+        $alert->save();
 
         $this->video->update([
             'processed' => true,
