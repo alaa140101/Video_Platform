@@ -73,18 +73,7 @@
               </a>
               <!-- Dropdown - Alerts -->
               <div class="dropdown-list dropdown-menu dropdown-menu-right text-right mt-2"
-                  aria-labelledby="alertsDropdown">
-                  <a class="dropdown-item d-flex align-items-center" href="#">
-                      <div class="ml-3">
-                          <div class="icon-circle bg-secondary">
-                              <i class="far fa-bell text-white"></i>
-                          </div>
-                      </div>
-                      <div>
-                          <div class="small text-gray-500">December 12, 2019</div>
-                          <span>A new monthly report is ready to download!</span>
-                      </div>
-                  </a>   
+                  aria-labelledby="alertsDropdown">                   
                   <div class="alert-body">
                     
                   </div>               
@@ -221,6 +210,53 @@
     });
   </script>
   <script src="{{asset('js/pushNotifications.js')}}"></script>
+  <script>
+    const token = '{{ Session::token() }}';
+    const urlNotify = '{{ route('notification')}}';
+    
+    $('#alertsDropdown').on('click', function(event){
+      event.preventDefault();
+      let notificationsWrapper = $('.alert-dropdown');
+      let notificationsToggle = notificationsWrapper.find('a[data-toggle]');
+      let notificationsCountElem = notificationsToggle.find('span[data-count]');
+
+      notificationsCount = 0;
+      notificationsCountElem.attr('data-count', notificationsCount);
+      notificationsWrapper.find('.notif-count').text(notificationsCount);
+      notificationsWrapper.show();
+
+      $.ajax({
+        method: 'POST',
+        url: urlNotify,
+        data: {
+          _token: token
+        },
+        success: function(data) {
+          let responseNotifications = "";
+          $.each(data.someNotifications, function(i, item) {
+            const responseDate = new Date(item.created_at);
+            const date = responseDate.getFullYear()+'-'+(responseDate.getMonth()+1)+'-'+responseDate.getDate();
+            const time = responseDate.getHours()+':'+(responseDate.getMinutes()+1)+':'+responseDate.getSeconds();
+
+            if (item.success) {
+              responseNotifications += `<a class="dropdown-item d-flex align-items-center" href="#">
+                                          <div class="ml-3">
+                                              <div class="icon-circle bg-secondary">
+                                                  <i class="far fa-bell text-white"></i>
+                                              </div>
+                                          </div>
+                                          <div>
+                                              <div class="small text-gray-500">`+date + ` الساعة ` + time+`</div>
+                                              <span>تهانينا لقد تم معالجة مقطع الفيديو <b>`+item.notification+`</b>بنجاح</span>
+                                          </div>
+                                        </a>  `;
+            }
+            $('.alert-body').html(responseNotifications);
+          });
+        }
+      });
+    });
+  </script>
   @yield('script')
 </body>
 </html>

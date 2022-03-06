@@ -18,6 +18,7 @@ use App\Models\Video;
 use FFMpeg\Filters\Video\VideoFilters;
 use FFMpeg\Format\Video\WebM;
 use Storage;
+use App\Models\Notification;
 
 class ConverVideoForStreaming implements ShouldQueue
 {
@@ -173,6 +174,12 @@ class ConverVideoForStreaming implements ShouldQueue
         $converted_video->video_id = $this->video->id;
 
         $converted_video->save();
+
+        $notification = new Notification();
+
+        $notification->user_id=$this->video->user_id;
+        $notification->notification = $this->video->title;
+        $notification->save();
 
         $data = [
             'video_title' => $this->video->title,
