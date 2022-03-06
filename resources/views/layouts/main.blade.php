@@ -69,7 +69,7 @@
                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-bell fa-fw fa-lg"></i>
                   <!-- Counter - Alerts -->
-                  <span class="badge badge-danger badge-counter" data-count="0">0</span>
+                  <span class="badge badge-danger badge-counter notif-count" data-count="0">0</span>
               </a>
               <!-- Dropdown - Alerts -->
               <div class="dropdown-list dropdown-menu dropdown-menu-right text-right mt-2"
@@ -220,13 +220,7 @@
       cluster: 'mt1'
     });
   </script>
+  <script src="{{asset('js/pushNotifications.js')}}"></script>
   @yield('script')
 </body>
 </html>
-
-{{-- 
-PUSHER_APP_ID=1356995
-PUSHER_APP_KEY=6946d34cf373221a6f6e
-PUSHER_APP_SECRET=38b16befea0c16f11f8f
-PUSHER_APP_CLUSTER=mt1
-  --}}
