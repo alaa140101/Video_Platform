@@ -42,6 +42,7 @@ Route::get('/channels', 'App\Http\Controllers\ChannelController@index')->name('c
 Route::get('/channels/search', 'App\Http\Controllers\ChannelController@search')->name('channels.search');
 
 Route::post('/notification', 'App\Http\Controllers\NotificationController@index')->name('notification');
+Route::get('/notification', 'App\Http\Controllers\NotificationController@allNotification')->name('all.Notification');
 
 Route::prefix('/admin')->middleware('can:update-videos')->group(function() {
     Route::get('/', 'App\Http\Controllers\AdminsController@index')->name('admin.index');

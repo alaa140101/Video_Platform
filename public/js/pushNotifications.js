@@ -5,7 +5,7 @@ let notificationsCount = parseInt(notificationsCountElem.data('count'));
 let notifications = notificationsWrapper.find('div.alert-body');
 
 // Subscribe to the channel we specified in our Laravel Event
-const channel = pusher.subscribe('real-notification');
+let channel = pusher.subscribe('real-notification');
 // Bind a function to an Event (the full Laravel class)
 channel.bind('App\\Events\\RealNotification', function(data) {
   let existingNotifications = notifications.html();

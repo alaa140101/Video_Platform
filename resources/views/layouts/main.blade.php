@@ -78,7 +78,7 @@
                   <div class="alert-body">
                     
                   </div>               
-                  <a class="dropdown-item text-center small text-gray-500" href="#">عرض جميع الاشعارات</a>
+                  <a class="dropdown-item text-center small text-gray-500" href="{{route('all.Notification')}}">عرض جميع الاشعارات</a>
                 </div>
             </li>
             @endauth
@@ -211,6 +211,7 @@
     });
   </script>
   <script src="{{asset('js/pushNotifications.js')}}"></script>
+  <script src="{{asset('js/failedNotifications.js')}}"></script>
   <script>
     const token = '{{ Session::token() }}';
     const urlNotify = '{{ route('notification')}}';
@@ -249,6 +250,18 @@
                                           <div>
                                               <div class="small text-gray-500">`+date + ` الساعة ` + time+`</div>
                                               <span>تهانينا لقد تم معالجة مقطع الفيديو <b>`+item.notification+`</b>بنجاح</span>
+                                          </div>
+                                        </a>  `;
+            }else{
+              responseNotifications += `<a class="dropdown-item d-flex align-items-center" href="#">
+                                          <div class="ml-3">
+                                              <div class="icon-circle bg-secondary">
+                                                  <i class="far fa-bell text-white"></i>
+                                              </div>
+                                          </div>
+                                          <div>
+                                              <div class="small text-gray-500">`+date + ` الساعة ` + time+`</div>
+                                              <span>للأسف حدث خطأ  أثناء معالجة الفيديو <b>`+item.notification+`</b>يرجى المحاولة مرة أخرى</span>
                                           </div>
                                         </a>  `;
             }

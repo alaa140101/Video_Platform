@@ -1,15 +1,15 @@
-let notificationsWrapper = $('.alert-dropdown');
-let notificationsToggle = notificationsWrapper.find('a[data-toggle]');
-let notificationsCountElem = notificationsToggle.find('span[data-count]');
-let notificationsCount = parseInt(notificationsCountElem.data('count'));
-let notifications = notificationsWrapper.find('div.alert-body');
+ notificationsWrapper = $('.alert-dropdown');
+ notificationsToggle = notificationsWrapper.find('a[data-toggle]');
+ notificationsCountElem = notificationsToggle.find('span[data-count]');
+ notificationsCount = parseInt(notificationsCountElem.data('count'));
+ notifications = notificationsWrapper.find('div.alert-body');
 
 // Subscribe to the channel we specified in our Laravel Event
-const channel = pusher.subscribe('failed-notification');
+ channel = pusher.subscribe('failed-notification');
 // Bind a function to an Event (the full Laravel class)
 channel.bind('App\\Events\\FailedNotification', function(data) {
-  let existingNotifications = notifications.html();
-  let newNotificationHtml = `<a class="dropdown-item d-flex align-items-center" href="#">
+   existingNotifications = notifications.html();
+   newNotificationHtml = `<a class="dropdown-item d-flex align-items-center" href="#">
                               <div class="ml-3">
                                   <div class="icon-circle bg-secondary">
                                       <i class="far fa-bell text-white"></i>
