@@ -20,6 +20,7 @@ use FFMpeg\Filters\Video\VideoFilters;
 use FFMpeg\Format\Video\WebM;
 use Storage;
 use App\Models\Notification;
+use App\Events\FailedNotification;
 
 class ConverVideoForStreaming implements ShouldQueue
 {
@@ -206,5 +207,26 @@ class ConverVideoForStreaming implements ShouldQueue
     public function getFileName($fileName, $type)
     {
         return preg_replace('/\\.[^.\\s]{3,4}$/','', $fileName). $type;
+    }
+
+    public function failed()
+    {
+        $notification = new Notification();
+        $notification->user_id = $this->video->user_id;
+        $notification->notification = $this->video->title;
+        $notification->success = false;
+
+        $notification->save();
+
+        $data = [
+            'video_title' => $this->video->title,
+        ];
+
+        event(new FailedNotification($data));
+
+        $alert = Alert::where('user_id', $this->video->user_id)->first();
+
+        $alert->alert++;
+        $alert->save();
     }
 }
